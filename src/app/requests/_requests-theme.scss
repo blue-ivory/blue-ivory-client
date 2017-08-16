@@ -1,0 +1,21 @@
+@import '~@angular/material/theming';
+@mixin requests-theme($theme) {
+    $primary: map-get($theme, primary);
+    $background: map-get($theme, background);
+    .no-requests-icon-container {
+        md-icon.icon-background {
+            color: mat-color($primary);
+        }
+    }
+    .new-requests {
+        background: mat-color($primary);
+    }
+    td-steps.request-steps {
+        .td-steps-header {
+            background: mat-color($background, app-bar);
+        }
+    }
+    .item-preview.selected {
+        border-right: 2px solid mat-color($primary);
+    }
+}

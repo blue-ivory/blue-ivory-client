@@ -1,0 +1,8 @@
+<div class="users-container">
+    <label *ngIf="searchTerm && (usersCollection$ | async)?.set">{{'showing_results_for'|i18n}} {{searchTerm}}</label>
+    <app-users-list [users]="(usersCollection$ | async)?.set"></app-users-list>
+</div>
+<td-paging-bar #pagingBar *ngIf="(usersCollection$ | async)?.totalCount > 0" [firstLast]="true" [pageSizeAll]="false" [pageSizes]="[5,10,15]" [initialPage]="page"
+    [pageSize]="pageSize" [total]="(usersCollection$ | async)?.totalCount" (change)="changePage($event)">
+    <span td-paging-bar-label hide-xs>{{'results_per_page' | i18n}}:</span> {{pagingBar.range}} <span hide-xs>{{'of' | i18n}} {{pagingBar.total}}</span>
+</td-paging-bar>

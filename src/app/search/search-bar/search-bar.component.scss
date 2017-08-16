@@ -1,0 +1,100 @@
+@import '~@angular/material/theming';
+@import 'src/app-theme.scss';
+.search-bar-container {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    .search-bar-input {
+        height: 34px;
+        transition: background 100ms ease-in;
+        border-radius: 4px;
+        background: rgba(255, 255, 255, 0.16);
+        padding: 5px 15px;
+        display: flex;
+        flex-direction: row;
+        &.focused {
+            border-radius: 4px 4px 0 0;
+            border: 1px solid rgba(0, 0, 0, 0.12);
+            background: rgba(255, 255, 255, 1);
+            -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.24);
+            box-shadow: 0 1px 1px rgba(0, 0, 0, 0.24);
+            .search-input {
+                color: black;
+                &::-webkit-input-placeholder {
+                    color: rgba(0, 0, 0, 0.54) !important;
+                }
+            }
+            md-icon {
+                color: rgba(0, 0, 0, 0.54);
+            }
+        }
+        .search-input {
+            color: white;
+            font: 16px arial, sans-serif;
+            height: 34px !important;
+            line-height: 34px;
+            background: transparent;
+            outline: 0;
+            border: none;
+            flex: 1;
+            padding: 0 10px;
+            &::-webkit-input-placeholder {
+                color: white !important;
+            }
+        }
+        md-icon {
+            cursor: pointer;
+            vertical-align: middle;
+            position: relative;
+            top: 16%;
+            color: #fff;
+            opacity: 1;
+            transition: all 100ms ease-in;
+            &.hidden {
+                opacity: 0 !important;
+                visibility: hidden;
+            }
+        }
+    }
+    .search-bar-helper {
+        box-shadow: 0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12), 0 5px 5px -3px rgba(0, 0, 0, 0.2);
+        background: white;
+        max-height: 210px;
+        overflow-y: auto;
+        transition: max-height 50ms ease-in;
+        position: absolute;
+        top: 46px;
+        width: 100%;
+        border-radius: 0 0 2px 2px;
+        z-index: 1;
+        display: flex;
+        flex-direction: column;
+        &.hidden {
+            max-height: 0px;
+            box-shadow: none;
+        }
+        .hide-link {
+            display: none;
+        }
+        a {
+            font-size: 16px;
+            padding: 5px 15px;
+            line-height: 2;
+            cursor: pointer;
+            color: black;
+            text-decoration: none;
+            &:hover {
+                background: rgba(0, 0, 0, 0.14);
+            }
+        }
+        .search-location {
+            font-weight: 100;
+            color: rgba(0, 0, 0, 0.54);
+        }
+        md-icon {
+            padding-left: 10px;
+            vertical-align: middle;
+            color: rgba(0, 0, 0, 0.54);
+        }
+    }
+}

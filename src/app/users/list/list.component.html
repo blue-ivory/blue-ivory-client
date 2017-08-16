@@ -1,0 +1,14 @@
+<div class="list-container">
+  <div class="users-list-container">
+    <md-list class="mat-elevation-z2">
+      <md-list-item (click)="openDialog(user)" *ngFor="let user of users">
+        <md-icon>person</md-icon>
+        <h4 md-line>{{user.firstName + " " + user.lastName}}</h4>
+
+        <p md-line>
+          <span>{{user._id}}</span><span *ngIf="user.organization"> - {{user.organization.name}}</span>
+        </p>
+      </md-list-item>
+    </md-list>
+  </div>
+</div>

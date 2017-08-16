@@ -1,0 +1,203 @@
+@import '~@angular/material/theming';
+@import '~@covalent/core/theming/all-theme';
+@import 'app/workflow/_workflow-theme.scss';
+@import 'app/home/_home-theme.scss';
+@import 'app/requests/_requests-theme.scss';
+@import 'app/introduction/_introduction-theme.scss';
+@include mat-core();
+@mixin covalent-custom-theme($theme) {
+    $primary: map-get($theme, primary);
+    td-confirm-dialog {
+        .mat-button.mat-accent,
+        .mat-icon-button.mat-accent {
+            color: mat-color($primary) !important;
+        }
+    }
+    td-steps {
+        .td-circle.mat-active {
+            background-color: mat-color($primary) !important;
+        }
+    }
+}
+
+@mixin app-theme($theme) {
+    @include workflow-theme($theme);
+    @include mat-toolbar-theme($theme);
+    @include home-theme($theme);
+    @include covalent-custom-theme($theme);
+    @include requests-theme($theme);
+    @include introduction-theme($theme);
+}
+
+// Define default theme 
+$app-primary: mat-palette($mat-blue, 800);
+$app-accent: mat-palette($mat-deep-orange, 500);
+$app-warn: mat-palette($mat-red, 500);
+$app-theme: mat-light-theme($app-primary, $app-accent, $app-warn);
+$background: #f2f2f2;
+.default-theme {
+    @include angular-material-theme($app-theme);
+    @include covalent-theme($app-theme);
+    @include app-theme($app-theme);
+}
+
+// Define dark theme
+$dark-background: black;
+$dark-primary: mat-palette($mat-indigo, 900);
+$dark-accent: mat-palette($mat-cyan, 700);
+$dark-warn: mat-palette($mat-red, 500);
+$dark-theme: mat-dark-theme($dark-primary, $dark-accent, $dark-warn);
+.dark-theme {
+    $background: map-get(map-get($dark-theme, background), background);
+    @include angular-material-theme($dark-theme);
+    @include covalent-theme($dark-theme);
+    @include app-theme($dark-theme);
+}
+
+// Define purple-green theme 
+$purple-green-background: #f2f2f2;
+$purple-green-primary: mat-palette($mat-purple, 500);
+$purple-green-accent: mat-palette($mat-green, A200);
+$purple-green-warn: mat-palette($mat-red, 400);
+$purple-green-theme: mat-light-theme($purple-green-primary, $purple-green-accent, $purple-green-warn);
+.purple-green-theme {
+    $background: map-get(map-get($purple-green-theme, background), background);
+    @include angular-material-theme($purple-green-theme);
+    @include covalent-theme($purple-green-theme);
+    @include app-theme($purple-green-theme);
+}
+
+// Define dark pink theme
+$dark-pink-background: black;
+$dark-pink-primary: mat-palette($mat-pink, 500);
+$dark-pink-accent: mat-palette($mat-grey, 500);
+$dark-pink-warn: mat-palette($mat-red, 600);
+$dark-pink-theme: mat-dark-theme($dark-pink-primary, $dark-pink-accent, $dark-pink-warn);
+.dark-pink-theme {
+    $background: map-get(map-get($dark-pink-theme, background), background);
+    @include angular-material-theme($dark-pink-theme);
+    @include covalent-theme($dark-pink-theme);
+    @include app-theme($dark-pink-theme);
+}
+
+// Define green-teal theme 
+$green-teal-background: #f2f2f2;
+$green-teal-primary: mat-palette($mat-green, 500);
+$green-teal-accent: mat-palette($mat-teal, 500);
+$green-teal-warn: mat-palette($mat-deep-orange, 900);
+$green-teal-theme: mat-light-theme($green-teal-primary, $green-teal-accent, $green-teal-warn);
+.green-teal-theme {
+    $background: map-get(map-get($green-teal-theme, background), background);
+    @include angular-material-theme($green-teal-theme);
+    @include covalent-theme($green-teal-theme);
+    @include app-theme($green-teal-theme);
+}
+
+/* Rotate Icon */
+
+md-icon.rotate-icon {
+    transform: rotate(180deg);
+}
+
+
+/* Sidenav Container */
+
+[fullscreen] {
+    &:not(.dark-theme) {
+        .mat-sidenav-container,
+        html {
+            background: #f2f2f2 !important;
+        }
+    }
+    &.dark-theme, &.dark-pink-theme {
+        .mat-sidenav-container,
+        html {
+            background: #303030 !important;
+        }
+    }
+}
+
+
+/* Pagination */
+
+td-paging-bar {
+    margin-top: 26px;
+    [layout="row"] {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+    }
+    button[disabled] {
+        color: rgba(0, 0, 0, 0.14) !important;
+    }
+}
+
+
+/* Steps */
+
+td-steps {
+    [layout-align="start center"] {
+        align-items: center;
+    }
+    td-step-body {
+        [flex] {
+            flex: 1 1 0;
+        }
+    }
+    .td-steps-header {
+        box-shadow: none !important;
+        flex-wrap: wrap;
+        .td-horizontal-line {
+            right: 0;
+            top: 25px;
+            min-width: 40px;
+        }
+        .td-step-header-content {
+            height: 40px !important;
+            margin: 10px 5px;
+        }
+        md-icon.td-edit-icon {
+            display: none;
+        }
+        .mat-complete {
+            color: mat-color(mat-palette($mat-green, 500)) !important;
+        }
+    }
+    [layout="row"] {
+        display: flex !important;
+        flex-direction: row;
+    }
+    [layout="column"] {
+        display: flex !important;
+        flex-direction: column;
+    }
+    .mat-ripple-boundary {
+        height: auto !important;
+        padding: 0 10px !important;
+        md-icon.td-edit-icon {
+            display: none !important;
+        }
+    }
+}
+
+
+/* Confirm Dialog */
+
+td-confirm-dialog {
+    td-dialog {
+        padding: 24px 24px 0 24px;
+        td-dialog-actions {
+            float: left;
+        }
+    }
+}
+
+
+/* Chips */
+
+md-chip-list:focus,
+md-basic-chip:focus,
+md-chip:focus {
+    outline: none;
+}

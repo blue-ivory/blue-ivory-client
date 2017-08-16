@@ -1,0 +1,12 @@
+<div class="search-bar-container" (clickOutside)="helperFocused = false">
+  <div class="search-bar-input" [class.focused]="focused" [class.focused]="focused">
+    <md-icon (click)="search()" class="search-icon">search</md-icon>
+    <input maskSpecialCharacter (keyup)="keyup()" (keyup.enter)="enterPressed()" [(ngModel)]="searchTerm" type="text" class="search-input"
+      placeholder="{{'start_searching' | i18n}}" (focus)="focused = true; helperFocused = true" (blur)="focused = false" />
+    <md-icon [class.hidden]="!searchTerm" (click)="clearSearchTerm()">clear</md-icon>
+  </div>
+  <div class="search-bar-helper" [class.hidden]="!searchTerm || !helperFocused">
+    <a *ngFor="let link of (authService.currentUser$ | async)?.routeGroups?.general" [class.hide-link]="!link.searchable" routerLink="{{link.route + searchTerm}}" (click)="search()">
+      <md-icon>search</md-icon>{{searchTerm}} <span class="search-location"> -   {{link.title | i18n}}</span></a>
+  </div>
+</div>

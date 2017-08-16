@@ -1,0 +1,33 @@
+@import '~@angular/material/theming';
+@import 'src/app-theme.scss';
+.pagination-container {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 16px;
+    background: linear-gradient(transparent, $background 25%);
+    margin: auto;
+    justify-content: center;
+    .page-number {
+        margin: 10px;
+        padding: 10px;
+        border-radius: 100%;
+        width: 20px;
+        height: 20px;
+        text-align: center;
+        cursor: pointer;
+        transition: background 150ms ease-in;
+        &.selected {
+            background: mat-color($app-primary);
+            color: white;
+            cursor: default;
+        }
+        &:hover:not(.selected) {
+            background: rgba(0, 0, 0, 0.24);
+        }
+    }
+    button {
+        margin: 10px;
+    }
+}

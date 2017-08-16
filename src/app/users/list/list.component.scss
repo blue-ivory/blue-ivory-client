@@ -1,0 +1,20 @@
+.list-container {
+    margin-top: 26px;
+
+    md-list {
+        background: white;  
+        padding: 0;
+
+        md-list-item {
+            cursor: pointer;
+            &:not(:last-child) {
+                border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+            }
+
+            &:hover {
+                background: rgba(0,0,0,0.14);
+            }
+
+        }
+    }
+}

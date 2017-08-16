@@ -1,0 +1,7 @@
+@import '~@angular/material/theming';
+@mixin workflow-theme($theme) {
+    $primary: map-get($theme, primary);
+    .counter-bubble::before {
+        background: mat-color($primary);
+    }
+}

@@ -1,0 +1,158 @@
+<div class="item-container" [@marginItem]="expandItem" [ngClass]="{'expanded': expandItem}" (clickOutside)="onClickOutside()">
+  <div class="item-preview" [class.selected]="requestService.selectedRequestId == request._id" [@previewItem]="expandItem" (click)="onClick()" fxLayout="row">
+    <span fxFlex="20">{{request.visitor.name}}</span>
+    <span fxFlex="20">{{request.visitor._id}}</span>
+    <span fxFlex="20">{{request.visitor.company}}</span>
+    <span fxFlex="30">{{request.startDate | date :'dd/MM/yyyy'}} - {{request.endDate | date : 'dd/MM/yyyy'}}</span>
+    <span fxFlex="10" *ngIf="isExpired(request.endDate) ; else status">
+        <md-icon class="expired" [mdTooltip]="'EXPIRED' | i18n">timer_off</md-icon>
+    </span>
+    <ng-template #status>
+      <span fxFlex="10" [ngSwitch]="request.status">
+      <md-icon class="approved" *ngSwitchCase="'APPROVED'" [mdTooltip]="'APPROVED' | i18n">check</md-icon>
+      <md-icon class="denied" *ngSwitchCase="'DENIED'" [mdTooltip]="'DENIED' | i18n">clear</md-icon>
+      <md-icon class="pending" *ngSwitchCase="'PENDING'" [mdTooltip]="'PENDING' | i18n">timer</md-icon>
+      </span>
+    </ng-template>
+    <span fxFlex="10" [ngSwitch]="request.isSoldier">
+      <md-icon *ngSwitchCase="true" class="soldier" [mdTooltip]="'soldier' | i18n">person</md-icon>
+      <md-icon *ngSwitchCase="false" class="civilian" [mdTooltip]="'civilian' | i18n">person</md-icon>
+      </span>
+  </div>
+  <md-progress-bar [class.show-loading]="loading" mode="indeterminate"></md-progress-bar>
+  <div class="item-body" [@expandItem]='expandItem'>
+    <div class="item-content" fxLayout="column">
+      <div class="visitor-details" fxLayout="row" fxLayout.xs="column">
+        <md-input-container fxFlex>
+          <input mdInput class="preview-mode" placeholder="{{'visitor_name'|i18n}}" disabled="true" [value]="request.visitor.name"
+          />
+        </md-input-container>
+        <md-input-container fxFlex>
+          <input mdInput class="preview-mode" placeholder="{{'pid'|i18n}}" disabled="true" [value]="request.visitor._id" />
+        </md-input-container>
+        <md-input-container fxFlex>
+          <input mdInput class="preview-mode" placeholder="{{'company'|i18n}}" disabled="true" [value]="request.visitor.company" />
+        </md-input-container>
+      </div>
+      <div fxLayout="row" fxLayout.xs="column">
+        <md-input-container fxFlex>
+          <input mdInput class="preview-mode" placeholder="{{'organization'|i18n}}" disabled="true" [value]="request.organization.name"
+          />
+        </md-input-container>
+        <md-input-container fxFlex>
+          <input mdInput class="preview-mode" placeholder="{{'visitor_type'|i18n}}" disabled="true" [value]="request.type | i18n" />
+        </md-input-container>
+        <md-input-container fxFlex fxLayout="row">
+          <input mdInput class="preview-mode" placeholder="{{'rank'|i18n}}" disabled="true" value="{{(request.rank ? request.rank : '--') | i18n}}"
+          />
+        </md-input-container>
+      </div>
+      <div class="request-details" fxLayout="row" fxLayout.xs="column">
+        <md-input-container fxFlex>
+          <input mdInput placeholder="{{'requestor' | i18n}}" disabled="true" value="{{request.requestor?.firstName + ' ' + request.requestor?.lastName}}"
+          />
+        </md-input-container>
+        <md-input-container fxFlex>
+          <input mdInput placeholder="{{'phone_number'|i18n}}" [disabled]="!editMode" [(ngModel)]="request.phoneNumber" />
+        </md-input-container>
+        <md-input-container fxFlex>
+          <input mdInput class="preview-mode" placeholder="{{'request_date'|i18n}}" disabled="true" type="text" value="{{request.requestDate | date:'dd/MM/yyyy'}}"
+          />
+        </md-input-container>
+      </div>
+      <div class="car-details" fxLayout="row" fxLayout.xs="column" *ngIf="request.car !== 'NONE'">
+        <md-input-container fxFlex>
+          <input mdInput placeholder="{{'car'|i18n}}" disabled="true" value="{{request.car + '_CAR' | i18n}}" class="preview-mode"
+          />
+        </md-input-container>
+        <md-input-container fxFlex>
+          <input mdInput placeholder="{{'car_number'|i18n}}" disabled="true" [value]="request.carNumber" class="preview-mode" />
+        </md-input-container>
+        <div fxFlex></div>
+      </div>
+      <div class="request-description" fxLayout="row" *ngIf="request.description">
+        <md-input-container fxFlex>
+          <input mdInput placeholder="{{'description'|i18n}}" [disabled]="!editMode" [(ngModel)]="request.description" />
+        </md-input-container>
+      </div>
+      <div class="workflow-status">
+        <td-steps [mode]="'horizontal'">
+          <td-step *ngFor="let task of request.workflow" [label]="task.organization.name" [sublabel]="'APPROVE_'+task.type | i18n"
+            [state]="task.status === 'PENDING' ? 'none' : (task.status === 'APPROVED' ? 'complete' : 'required')">
+            <ng-template td-step-actions>
+              <div fxLayout="column" fxFlex>
+                <div class="task-information" fxLayout="row" fxLayout.xs="column">
+                  <div [ngSwitch]="task.type" fxLayout="row">
+                    <md-icon class="task-type-icon" *ngSwitchCase="'HUMAN'">person</md-icon>
+                    <md-icon class="task-type-icon" *ngSwitchCase="'CAR'">directions_car</md-icon>
+                    <div fxFlex fxLayout="row" fxLayout.xs="column">
+                      <md-input-container fxFlex>
+                        <input *ngSwitchCase="'HUMAN'" mdInput [placeholder]="'task_for' | i18n" disabled="true" value="{{(request.isSoldier ? 'soldier' : 'civilian') | i18n}} - {{task.organization.name}}"
+                          class="preview-mode" />
+                        <input *ngSwitchCase="'CAR'" mdInput [placeholder]="'task_for' | i18n" disabled="true" value="{{'car' | i18n}} - {{task.organization.name}}"
+                          class="preview-mode" />
+                      </md-input-container>
+                      <md-input-container fxFlex>
+                        <input mdInput [placeholder]="'task_status' | i18n" disabled="true" [value]="task.status | i18n" class="preview-mode" />
+                      </md-input-container>
+                      <md-input-container fxFlex *ngIf="task.authorizer">
+                        <input mdInput [placeholder]="'changed_by' | i18n" disabled="true" [value]="task.authorizer.firstName + ' ' + task.authorizer.lastName"
+                          class="preview-mode" />
+                      </md-input-container>
+                      <md-input-container fxFlex *ngIf="task.lastChangeDate">
+                        <input mdInput [placeholder]="'last_change_date' | i18n" disabled="true" [value]="task.lastChangeDate | date: 'dd/MM/yyyy hh:mm'"
+                          class="preview-mode" />
+                      </md-input-container>
+                    </div>
+                  </div>
+                </div>
+                <div class="authorizer-inputs" fxLayout="column" *ngIf="task.canEdit && request.status === 'PENDING' ; else previewTaskDetails">
+                  <div fxLayout="row">
+                    <md-checkbox [(ngModel)]="task.needEscort" fxFlex="20">{{'require_escort' | i18n}}</md-checkbox>
+                    <md-checkbox [(ngModel)]="task.needTag" fxFlex="20">{{'require_tag' | i18n}}</md-checkbox>
+                    <md-input-container fxFlex>
+                      <input [(ngModel)]="task.securityClearance" mdInput type="number" [placeholder]="'security_clearance' | i18n" min="0" max="5">
+                    </md-input-container>
+                    <div fxFlex="5"></div>
+                    <md-input-container fxFlex>
+                      <input mdInput type="number" [(ngModel)]="task.confirmationNumber" [placeholder]="'confirmation_number' | i18n">
+                    </md-input-container>
+                    <button fxFlex="10" md-button (click)="changeTaskStatus(task._id, 'APPROVED', task.needEscort, task.needTag, task.securityClearance, task.confirmationNumber)"
+                      color="primary">{{'approve' | i18n}}</button>
+                    <button fxFlex="10" md-button (click)="changeTaskStatus(task._id, 'DENIED', task.needEscort, task.needTag, task.securityClearance, task.confirmationNumber)">{{'deny' | i18n}}</button>
+                  </div>
+                </div>
+                <ng-template #previewTaskDetails>
+                  <div fxLayout="row" class="preview-task-details">
+                    <md-input-container>
+                      <input mdInput [placeholder]="'require_escort' | i18n" disabled="true" [value]="(task.needEscort ? 'yes':'no') |i18n" class="preview-mode"
+                      />
+                    </md-input-container>
+                    <md-input-container>
+                      <input mdInput [placeholder]="'require_tag' | i18n" disabled="true" [value]="(task.needTag ? 'yes':'no') |i18n" class="preview-mode"
+                      />
+                    </md-input-container>
+                    <md-input-container>
+                      <input mdInput [placeholder]="'security_clearance' | i18n" disabled="true" [value]="task.securityClearance" class="preview-mode"
+                      />
+                    </md-input-container>
+                    <md-input-container *ngIf="task.confirmationNumber">
+                      <input mdInput [placeholder]="'confirmation_number' | i18n" disabled="true" [value]="task.confirmationNumber" class="preview-mode"
+                      />
+                    </md-input-container>
+                  </div>
+                </ng-template>
+              </div>
+            </ng-template>
+          </td-step>
+        </td-steps>
+      </div>
+    </div>
+    <div class="item-actions" align="end">
+      <button md-button (click)="duplicate()">  {{'duplicate'|i18n}} <md-icon>content_copy</md-icon> </button>
+      <button *ngIf="canEditRequest" md-button [hidden]="editMode" (click)="editMode = true"> {{'edit'|i18n}} <md-icon>edit</md-icon> </button>
+      <button *ngIf="canEditRequest" md-button (click)="save()" [hidden]="!editMode" (click)="editMode = false">  {{'save'|i18n}} <md-icon>save</md-icon> </button>
+      <button *ngIf="canDeleteRequest" md-button (click)="remove()">  {{'remove'|i18n}} <md-icon>delete</md-icon> </button>
+    </div>
+  </div>
+</div>

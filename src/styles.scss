@@ -1,0 +1,92 @@
+@import 'src/app-theme.scss';
+* {
+    // font-family: 'Roboto', sans-serif;
+    font-family: 'Rubik', sans-serif;
+}
+
+.mat-input-underline.mat-disabled {
+    display: none;
+}
+
+md-sidenav-layout {
+    .md-sidenav-content {
+        overflow-y: hidden;
+    }
+}
+
+md-spinner {
+    margin: auto;
+    height: 50px !important;
+    width: 50px !important;
+}
+
+md-toolbar {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    .mat-toolbar-row {
+        padding: 0 25px !important;
+        height: 64px !important;
+    }
+    .toolbar-spacer {
+        flex: 1 1 auto;
+    }
+}
+
+[hidden] {
+    display: none !important;
+}
+
+.mat-sidenav-content {
+    overflow-y: hidden !important;
+}
+
+
+/* Navigation Bar */
+
+.mat-ink-bar {
+    background-color: white !important;
+    height: 4px !important;
+}
+
+
+/* Dialogs */
+
+md-dialog-container {
+    padding: 0 0 24px 0 !important;
+    @include mat-elevation(24);
+    [md-dialog-content] {
+        margin: 0 !important;
+        padding-top: 8px;
+    }
+    md-toolbar {
+        height: 64px !important; // @include mat-elevation(2);
+        md-toolbar-row {
+            height: 64px !important;
+        }
+    }
+}
+
+
+/* Navlist - item padding */
+
+md-nav-list {
+    [md-list-item] {
+        .mat-list-text+span {
+            padding: 0 16px !important;
+        }
+    }
+}
+
+
+/* Datepicker */
+
+.mat-calendar-body-label {
+    padding: 16px !important;
+}
+
+
+/* Dialog Overlay */
+
+// .cdk-overlay-backdrop.cdk-overlay-backdrop-showing {
+//     opacity: 0.12 !important;
+// }

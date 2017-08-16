@@ -1,0 +1,17 @@
+@import '~@angular/material/theming';
+@mixin introduction-theme($theme) {
+    $primary: map-get($theme, primary);
+    $background: map-get($theme, background);
+    $foreground: map-get($theme, foreground);
+
+    .introduction-backdrop {
+        background: mat-color($background, background);
+    }
+
+    md-dialog-content{
+        .title, 
+        .description {
+            color: mat-color($foreground, text);
+        }
+    }
+}

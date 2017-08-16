@@ -1,0 +1,114 @@
+@import '~@angular/material/theming';
+@import 'src/app-theme.scss';
+.workflow-details-container {
+    margin-left: 116px;
+    margin-right: 42px;
+    md-card-content {
+        margin-top: 20px;
+    }
+    md-icon {
+        color: rgba(0, 0, 0, 0.54);
+        padding: 0 16px;
+    }
+    div.select-item {
+        margin-left: 16px;
+        justify-content: flex-end;
+    }
+    md-card {
+        margin-top: 35px;
+    }
+    md-icon {
+        padding-top: 12px;
+    }
+    button {
+        md-icon {
+            padding: 0;
+        }
+    }
+    md-radio-group {
+        position: relative;
+        top: 10px;
+        md-radio-button {
+            margin-left: 25px;
+        }
+    }
+    .workflow-list {
+        counter-reset: section;
+        .workflow-item {
+            margin: 20px 0;
+            padding: 5px 0;
+            position: relative;
+            cursor: move;
+            &.dragged-element {
+                border: 1px dotted rgba(0, 0, 0, 0.52);
+            }
+            &.drag-over {
+                background: rgba(0, 0, 0, 0.12);
+            }
+            & *:not(button) {
+                pointer-events: none;
+            }
+            &:not(:first-child)::before {
+                position: absolute;
+                border: 1px solid #cfcfcf;
+                width: 0;
+                height: 38px;
+                display: block;
+                content: '';
+                right: 44px;
+                z-index: 1;
+                top: -42px;
+                margin-left: -1px;
+            }
+            .counter-bubble {
+                position: relative;
+                &.counter-bubble::before {
+                    content: counter(section);
+                    counter-increment: section;
+                    display: block;
+                    width: 50px;
+                    height: 50px;
+                    line-height: 50px;
+                    text-align: center;
+                    border-radius: 50%;
+                    color: white;
+                    margin: 0 20px;
+                }
+            }
+            p {
+                padding-top: 5px;
+                padding-right: 25px;
+            }
+            .flex-spacer {
+                flex: 1 1 0;
+            }
+            button {
+                margin: 5px;
+            }
+        }
+    }
+}
+
+.disabled-pointer-events {
+    pointer-events: none;
+}
+
+.drag-handler {
+    cursor: pointer;
+}
+
+:host /deep/ {
+    md-list-item {
+        &.drag-over {
+            background: rgba(0, 0, 0, 0.12);
+        }
+        .mat-list-item-content {
+            &.dragged-element {
+                border: 1px dotted rgba(0, 0, 0, 0.52);
+            }
+            &>*:not(.drag-handler):not(button) {
+                pointer-events: none;
+            }
+        }
+    }
+}

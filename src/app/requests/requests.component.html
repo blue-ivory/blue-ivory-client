@@ -1,0 +1,38 @@
+<div class="new-requests" *ngIf="requestService.hasNewRequests" (click)="refreshRequests()" fxLayout="row">
+    <div class="text">{{'new_requests' | i18n}}</div>
+    <md-icon class="refresh-icon">refresh</md-icon>
+</div>
+<div *ngIf="requestService.isLoading ; else requests">
+    <md-spinner></md-spinner>
+</div>
+<ng-template #requests>
+    <div class="no-requests-container" [ngSwitch]="requestsType" *ngIf="(requestService.requests$ | async)?.totalCount === 0; else requestsList">
+        <div class="bubble-container">
+            <div class="no-requests-icon-container" fxLayout="column">
+                <md-icon class="icon-background" *ngSwitchCase="'all'">history</md-icon>
+                <md-icon class="icon-background" *ngSwitchCase="'my'">star</md-icon>
+                <md-icon class="icon-background" *ngSwitchCase="'pending'">access_time</md-icon>
+                <md-icon class="icon-background" *ngSwitchCase="'civilian'">person</md-icon>
+                <md-icon class="icon-background" *ngSwitchCase="'soldier'">person</md-icon>
+                <span>{{'no_' + requestsType + '_requests' | i18n}}</span>
+                <div *ngIf="searchTerm">
+                    <span class="no-requests-for-search-term">{{'for' | i18n}} {{searchTerm}}</span>
+                    <button (click)="clearSearchTerm()" md-icon-button [mdTooltip]="'clear_search_term' | i18n"><md-icon>clear</md-icon></button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <ng-template #requestsList>
+        <div class="requests-container">
+            <label *ngIf="searchTerm && (requestService.requests$ | async)?.set">{{'showing_results_for'|i18n}} {{searchTerm}}</label>
+            <app-requests-list [requests]="(requestService.requests$ | async)?.set"></app-requests-list>
+        </div>
+    </ng-template>
+
+    <td-paging-bar #pagingBar *ngIf="(requestService.requests$ | async)?.totalCount > 0" [firstLast]="true" [pageSizeAll]="false"
+        [pageSizes]="[5,10,15]" [initialPage]="page" [pageSize]="pageSize" [total]="(requestService.requests$ | async)?.totalCount"
+        (change)="changePage($event)">
+        <span td-paging-bar-label hide-xs>{{'results_per_page' | i18n}}:</span> {{pagingBar.range}} <span hide-xs>{{'of' | i18n}} {{pagingBar.total}}</span>
+    </td-paging-bar>
+</ng-template>

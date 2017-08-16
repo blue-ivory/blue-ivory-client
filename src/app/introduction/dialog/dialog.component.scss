@@ -1,0 +1,71 @@
+@import '~@angular/material/theming';
+@import 'src/app-theme.scss';
+md-dialog-content {
+    padding: 0 0 60px 0!important;
+    margin: 0 !important;
+    max-height: 100%;
+    .title {
+        text-align: center;
+        font-size: 25px;
+        font-weight: 500;
+        display: block;
+    }
+    .description {
+        text-align: right;
+        white-space: pre-line;
+        word-break: break-word;
+        padding: 15px 30px;
+    }
+    .laptop-image {
+        background: url(/assets/laptop.png) no-repeat top left transparent;
+        background-size: 600px;
+        margin: auto;
+        height: 360px;
+        width: 600px;
+        .video-container {
+            position: relative;
+            text-align: center;
+            video {
+                position: relative;
+                width: 454px;
+                top: 20px;
+            }
+        }
+    }
+    .user-profile {
+        padding: 0 25px;
+        md-icon {
+            position: relative;
+            top: 8px;
+            margin-left: 16px;
+            color: rgba(0, 0, 0, 0.54);
+        }
+    }
+
+    .app-logo {
+        display: block;
+        margin: auto;
+        width: 150px;
+    }
+}
+
+md-dialog-actions {
+    display: inline-block;
+    // position: absolute;
+    bottom: 24px;
+    width: 100%;
+    button {
+        margin: 0 8px;
+        float: left;
+    }
+}
+
+/deep/ {
+    .introduction-backdrop {
+        opacity: 1 !important;
+    }
+    md-dialog-container {
+        // padding: 0 !important;
+        min-width: 750px;
+    }
+}

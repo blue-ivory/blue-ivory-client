@@ -1,0 +1,154 @@
+<md-toolbar>
+  <span class="title">{{'new_request' | i18n}}</span>
+  <span class="toolbar-spacer"></span>
+</md-toolbar>
+<div class="spinner-container" [class.hidden]="!loading">
+  <md-spinner></md-spinner>
+</div>
+<form [formGroup]="createRequestForm">
+  <div md-dialog-content>
+    <div fxLayout="column">
+      <td-steps [mode]="'horizontal'" class="request-steps">
+        <td-step (activated)="selectStep(0)" (deactivated)="checkVisitorDetails()" label="{{'visitor_details' | i18n}}" [active]="activeStep === 0"
+          [state]="visitorStepState" [class.no-pointer-events]="activeStep === 0">
+          <ng-template td-step-actions>
+            <div fxLayout="column">
+              <div fxLayout="row">
+                <md-icon>credit_card</md-icon>
+                <md-input-container fxFlex floatPlaceholder="never">
+                  <input mdInput formControlName="pid" (blur)="visitorIdChanged()" required placeholder="{{'pid'|i18n}}" pattern="^[0-9]{6,9}$"
+                    type="number" />
+                  <md-error *ngIf="createRequestForm.get('pid').errors">{{'pid' | i18n }} {{'is_required' | i18n}} {{'should_have_6_to_9_digits' | i18n}}</md-error>
+                </md-input-container>
+              </div>
+              <div fxLayout="row">
+                <md-icon>person</md-icon>
+                <md-input-container fxFlex floatPlaceholder="never">
+                  <input mdInput formControlName="name" required placeholder="{{'visitor_name'|i18n}}" />
+                  <md-error *ngIf="createRequestForm.get('name').errors">{{'visitor_name' | i18n }} {{'is_required' | i18n}}</md-error>
+                </md-input-container>
+              </div>
+              <div fxLayout="row">
+                <md-icon>business</md-icon>
+                <md-input-container fxFlex floatPlaceholder="never">
+                  <input mdInput formControlName="company" required placeholder="{{'company'|i18n}}" />
+                  <md-error *ngIf="createRequestForm.get('company').errors">{{'company' | i18n }} {{'is_required' | i18n}}</md-error>
+                </md-input-container>
+              </div>
+              <div fxLayout="row">
+                <md-icon class="rotate-icon">label</md-icon>
+                <md-select fxFlex floatPlaceholder="never" formControlName="type" (change)="visitorTypeChanged($event.value)" placeholder="{{'visitor_type'|i18n}}">
+                  <md-option *ngFor="let type of visitorTypes" [value]="type">
+                    {{type.name | i18n}}
+                  </md-option>
+                </md-select>
+                <md-select fxFlex floatPlaceholder="never" formControlName="rank" placeholder="{{'rank' | i18n}}">
+                  <md-option *ngFor="let rank of ranks" [value]="rank">
+                    <div>
+                      <img class="rank-image" width="30" src="../assets/ranks/{{rank}}.png">
+                      <label>{{rank | i18n}}</label>
+                    </div>
+                  </md-option>
+                </md-select>
+              </div>
+              <div fxLayout="row">
+                <md-icon>directions_car</md-icon>
+                <md-button-toggle-group #carTypeGroup="mdButtonToggleGroup" formControlName="car" (change)="carTypeChanged($event)">
+                  <md-button-toggle *ngFor="let type of carTypeKeys" [value]="type">
+                    {{ type+'_CAR' | i18n}}
+                  </md-button-toggle>
+                </md-button-toggle-group>
+                <md-input-container fxFlex floatPlaceholder="never" [class.hide]="carTypeGroup.value === 'NONE'">
+                  <input mdInput formControlName="carNumber" required placeholder="{{'car_number'|i18n}}" />
+                  <md-error *ngIf="createRequestForm.get('carNumber').errors">{{'car_number' | i18n }} {{'is_required' | i18n}}</md-error>
+                </md-input-container>
+              </div>
+            </div>
+          </ng-template>
+        </td-step>
+        <td-step (activated)="selectStep(1)" (deactivated)="checkRequestDetails()" label="{{'request_details' | i18n}}" [active]="activeStep === 1"
+          [state]="requestStepState" [class.no-pointer-events]="activeStep === 1">
+          <ng-template td-step-actions>
+            <div fxLayout="column">
+              <div fxLayout="column">
+                <div fxLayout="row">
+                  <md-icon>access_time</md-icon>
+                  <md-input-container fxFlex>
+                    <input mdInput required=true formControlName="startDate" [mdDatepicker]="startDate" placeholder="{{'start_date'|i18n}}">
+                    <button mdSuffix [mdDatepickerToggle]="startDate"></button>
+                    <md-error *ngIf="createRequestForm.get('startDate').errors">{{'start_date' | i18n }} {{'should_be_date_format' | i18n}}</md-error>
+                  </md-input-container>
+                  <md-datepicker #startDate></md-datepicker>
+                  <md-input-container fxFlex>
+                    <input mdInput required=true formControlName="endDate" [mdDatepicker]="endDate" placeholder="{{'end_date'|i18n}}">
+                    <button mdSuffix [mdDatepickerToggle]="endDate"></button>
+                    <md-error *ngIf="createRequestForm.get('endDate').errors">{{'end_date' | i18n }} {{'should_be_date_format' | i18n}}</md-error>
+                  </md-input-container>
+                  <md-datepicker #endDate></md-datepicker>
+                </div>
+                <md-error style="text-align: center" *ngIf="createRequestForm.hasError('endDateLessThenStartDate')">{{'end_date' | i18n}} {{'cannot_be_before_start_date' |i18n}}</md-error>
+              </div>
+              <div fxLayout="row">
+                <md-icon>account_balance</md-icon>
+                <md-select fxFlex floatPlaceholder="never" required=true formControlName="organization" [(ngModel)]="selectedOrganizationId"
+                  placeholder="{{'request_for_organization' | i18n}}" (change)="updateApprovableUsers()">
+                  <md-option *ngFor="let organization of organizations" [value]="organization._id">{{ organization.name }}</md-option>
+                </md-select>
+              </div>
+              <div fxLayout="row">
+                <md-icon>description</md-icon>
+                <md-input-container fxFlex floatPlaceholder="never">
+                  <input mdInput formControlName="description" placeholder="{{'description'|i18n}}" type="text" />
+                </md-input-container>
+              </div>
+              <div fxLayout="row">
+                <md-icon>mail</md-icon>
+                <md-chip-list fxFlex fxLayout="row">
+                  <md-chip *ngFor="let user of mailingList">
+                    <span>{{ user.firstName + ' ' + user.lastName }}</span>
+                    <span class="clear-chip" (click)="removeFromMailingList(user)">x</span>
+                  </md-chip>
+
+                  <md-basic-chip fxLayout="row" disabled="true" fxFlex>
+                    <md-input-container fxFlex floatPlaceholder="never">
+                      <input formControlName="usersMailingList" type="text" placeholder="{{'mail_alert' | i18n}}" mdInput [mdAutocomplete]="auto">
+                    </md-input-container>
+
+                    <md-autocomplete #auto="mdAutocomplete">
+                      <md-option (onSelectionChange)="addUserToMailingList($event, user)" *ngFor="let user of filteredApprovableUsers | async">
+                        {{ user.firstName + ' ' + user.lastName }}
+                      </md-option>
+                    </md-autocomplete>
+                  </md-basic-chip>
+                </md-chip-list>
+              </div>
+            </div>
+          </ng-template>
+        </td-step>
+        <td-step (activated)="selectStep(2)" (deactivated)="checkRequestorDetails()" label="{{'requestor_details' | i18n}}" [active]="activeStep === 2"
+          [state]="requestorStepState" [class.no-pointer-events]="activeStep === 2">
+          <ng-template td-step-actions>
+            <div fxLayout="column">
+              <div fxLayout="row" *ngIf="currentUser" class="person-name">
+                <md-icon>person</md-icon>
+                <div fxFlex>{{currentUser.firstName + ' ' + currentUser.lastName}}</div>
+              </div>
+              <div fxLayout="row">
+                <md-icon>phone</md-icon>
+                <md-input-container fxFlex grow floatPlaceholder="never">
+                  <input mdInput formControlName="phoneNumber" required placeholder="{{'phone_number'|i18n}}" />
+                  <md-error *ngIf="createRequestForm.get('phoneNumber').errors">{{'phone_number' | i18n }} {{'is_required' | i18n}}</md-error>
+                </md-input-container>
+              </div>
+            </div>
+          </ng-template>
+        </td-step>
+      </td-steps>
+    </div>
+  </div>
+  <div md-dialog-actions align="end">
+    <button md-button color="primary" type="button" (click)="dialogRef.close()">{{'cancel' | i18n}}</button>
+    <button md-button color="primary" *ngIf="activeStep === 2" type="button" [disabled]="!createRequestForm.valid" (click)="save()">{{'save' | i18n}}</button>
+    <button md-button color="primary" *ngIf="activeStep < 2" type="button" (click)="nextStep()">{{'continue' | i18n}}</button>
+  </div>
+</form>

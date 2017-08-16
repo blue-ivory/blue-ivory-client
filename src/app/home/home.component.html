@@ -1,0 +1,59 @@
+<div fullscreen [ngClass]="settingsService.theme + '-theme'">
+  <md-toolbar color="primary" class="application-toolbar">
+    <button md-icon-button fxHide.gt-sm (click)="menuSidenav.toggle()"><md-icon>menu</md-icon></button>
+    <span class="app-name">{{'app_name' | i18n}}</span>
+    <app-search-bar (onSearch)="onSearch($event)" (onClear)="onClear()"></app-search-bar>
+    <span class="toolbar-spacer"></span>
+    <span class="user-greeting" fxHide.lt-md>{{'hello' | i18n }} <strong>{{(user$ | async)?.firstName + ' ' + (user$ | async)?.lastName}}</strong></span>
+  </md-toolbar>
+  <md-sidenav-container [class.opacity]="!searchTerm && firstLoad" dir="rtl">
+    <md-sidenav #menuSidenav [opened]="media.isActive('gt-sm')" mode="side" dir="rtl" disableClose="true">
+      <md-nav-list>
+        <a md-list-item *ngFor="let link of (user$ | async)?.routeGroups?.general" (click)="activateLink(link.id, link.resource)"
+          routerLink="{{link.route + ((searchTerm && link.searchable) ? searchTerm : '')}}" [class.active]="activeLinkIndex === link.id">
+          <md-icon md-list-icon>{{link.icon}}</md-icon>
+          <span md-line>{{link.title | i18n}}</span>
+        </a>
+        <md-divider></md-divider>
+        <h3 md-subheader>{{'requests_for' | i18n}}</h3>
+        <a md-list-item *ngFor="let link of (user$ | async)?.routeGroups?.requests_for" (click)="activateLink(link.id, link.resource)"
+          routerLink="{{link.route + ((searchTerm && link.searchable) ? searchTerm : '')}}" [class.active]="activeLinkIndex === link.id">
+          <md-icon class="rotate-icon" md-list-icon>{{link.icon}}</md-icon>
+          <span md-line>{{link.title | i18n}}</span>
+        </a>
+        <md-divider></md-divider>
+        <h3 md-subheader>{{'actions' |i18n}}</h3>
+        <a md-list-item (click)="createRequestDialog()">
+          <md-icon md-list-icon>add</md-icon>
+          <span md-list>{{'new_request' | i18n}}</span>
+        </a>
+        <a md-list-item (click)="createOrganizationDialog()" *ngIf="(user$ | async)?.isAdmin">
+          <md-icon md-list-icon>add</md-icon>
+          <span md-list>{{'new_organization' | i18n}}</span>
+        </a>
+        <md-divider></md-divider>
+        <a md-list-item (click)="settingsDialog()">
+          <md-icon md-list-icon>settings</md-icon>
+          <span md-list>{{'settings' | i18n}}</span>
+        </a>
+        <a md-list-item href="https://hi.prod.b.domain.I/channel/%D7%A2%D7%95%D7%9E%D7%93-%D7%91%D7%A9%D7%A2%D7%A8" target="_blank">
+          <md-icon md-list-icon>feedback</md-icon>
+          <span md-list>{{'send_feedback' | i18n}}</span>
+        </a>
+        <a md-list-item (click)="openIntroDialog()">
+          <md-icon md-list-icon>help</md-icon>
+          <span md-list>{{'help' | i18n}}</span>
+        </a>
+      </md-nav-list>
+    </md-sidenav>
+
+    <div class="application-content">
+      <router-outlet></router-outlet>
+    </div>
+
+    <app-settings></app-settings>
+    <app-request-create mdTooltipPosition="above" [mdTooltip]="'new_request' | i18n" [class.show]="activeResource == 'requests' || !activeResource"></app-request-create>
+    <app-organization-create mdTooltipPosition="above" [mdTooltip]="'new_organization' | i18n" [class.show]="activeResource == 'organizations'"></app-organization-create>
+
+  </md-sidenav-container>
+</div>

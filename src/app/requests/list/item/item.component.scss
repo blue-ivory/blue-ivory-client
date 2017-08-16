@@ -1,0 +1,105 @@
+@import '~@angular/material/theming';
+@import 'src/app-theme.scss';
+.item-container {
+    background: #fff;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.07);
+    transition: all 250ms ease-in;
+    position: relative;
+    @include mat-elevation(2);
+    &.expanded {
+       
+        @include mat-elevation(8);
+        // .item-preview {
+        //     line-height: 1.5;
+        //     padding: 16px 20px;
+        //     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        // }
+    }
+    md-icon {
+        color: rgba(0, 0, 0, 0.54);
+    }
+    md-progress-bar {
+        opacity: 0;
+        visibility: hidden;
+        &.show-loading {
+            opacity: 1;
+            visibility: visible;
+        }
+    }
+    .item-preview {
+        align-items: center;
+        cursor: pointer;
+        vertical-align: middle;
+        line-height: 20px;
+        padding: 12px 0;
+        text-align: center;
+        md-icon {
+            &.soldier {
+                color: mat-color(mat-palette($mat-green, 500));
+            }
+            &.civilian {
+                color: mat-color(mat-palette($mat-blue, 500));
+            }
+        }
+    }
+    .item-body {
+        // transition: all 250ms ease-in;
+        // max-height: 0px;
+        overflow: hidden;
+        .item-content {
+            padding: 20px;
+        }
+        .item-actions {
+            line-height: 48px;
+            background-color: rgba(0, 0, 0, 0.04);
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+            padding: 16px 20px;
+            button md-icon {
+                font-size: 20px;
+                position: absolute;
+                right: -3px;
+                top: 8px;
+            }
+        }
+    }
+    .workflow-status {
+        margin-top: 10px;
+        padding-top: 10px;
+        border-top: 1px solid rgba(0, 0, 0, 0.12);
+        table {
+            width: 100%;
+            text-align: right;
+            tr {
+                line-height: 38px;
+            }
+        }
+        md-icon.task-type-icon {
+            padding: 8px;
+            background: $background;
+            border-radius: 50%;
+            margin-left: 20px;
+        }
+        .authorizer-inputs {
+            padding: 0 12px;
+            md-checkbox {
+                line-height: 48px;
+            }
+        }
+        .preview-task-details {
+            margin-right: 60px;
+        }
+    }
+}
+
+md-input-container {
+    margin-left: 10px !important;
+}
+
+.mat-input-element:disabled {
+    color: rgba(0, 0, 0, 0.85);
+}
+
+app-datepicker {
+    left: 15px !important;
+    position: relative;
+}

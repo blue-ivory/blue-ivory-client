@@ -1,0 +1,18 @@
+<md-toolbar>
+  <span>{{'new_organization' | i18n}}</span>
+</md-toolbar>
+<div md-dialog-content>
+  <form [formGroup]="createOrganizationForm">
+    <div md-dialog-content>
+      <div fxLayout="column">
+        <md-input-container fxFlex>
+          <input mdInput formControlName="name" required placeholder="{{'organization_name'|i18n}}" />
+        </md-input-container>
+      </div>
+    </div>
+  </form>
+</div>
+<div md-dialog-actions align="end">
+  <button md-button color="primary" type="reset" (click)="cancel()">{{'cancel'|i18n}}</button>
+  <button md-button color="primary" type="button" [disabled]="!createOrganizationForm.valid" (click)="save()">{{'save'|i18n}}</button>
+</div>

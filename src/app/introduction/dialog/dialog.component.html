@@ -1,0 +1,45 @@
+<md-dialog-content>
+  <div *ngIf="index < slides.length ; else nextSteps">
+    <h2 class="title">{{slides[index].title | i18n}}</h2>
+    <p class="description">{{slides[index].description | i18n}}</p>
+    <div class="laptop-image" *ngIf="slides[index].video">
+      <div class="video-container">
+        <video autoplay controls #videoPlayer [src]="'../assets/' + slides[index].video"></video>
+      </div>
+    </div>
+  </div>
+  <ng-template #nextSteps>
+    <div *ngIf="currentUser.organization ; else userProfile">
+      <h2 class="title">{{'blue_ivory'|i18n}}</h2>
+      <p class="description">{{'app_intro_description' | i18n}}</p>
+      <img class="app-logo" [src]="'../assets/gate-keeper.png'">
+    </div>
+    <ng-template #userProfile>
+      <h2 class="title">{{'user_profile'|i18n}}</h2>
+      <form [formGroup]="userProfileForm" class="user-profile" fxLayout="column">
+        <p class="description">{{'select_organization_description' | i18n}}</p>
+        <div fxLayout="row">
+          <md-icon>business</md-icon>
+          <md-select placeholder="{{'select_organization' | i18n}}" fxFlex formControlName="organization">
+            <md-option *ngFor="let organization of organizations$ | async" [value]="organization._id">
+              {{organization.name}}
+            </md-option>
+          </md-select>
+        </div>
+        <div fxLayout="row">
+          <md-icon>phone</md-icon>
+          <md-input-container floatPlaceholder="never" fxFlex>
+            <input mdInput placeholder="{{'phone_number' | i18n}}" formControlName="phoneNumber" />
+          </md-input-container>
+        </div>
+      </form>
+    </ng-template>
+  </ng-template>
+
+</md-dialog-content>
+<md-dialog-actions>
+  <button md-button (click)="selectSlide(index+1)" color="primary" *ngIf="index < slides.length">{{'continue' | i18n}}</button>
+  <button md-button *ngIf="index === slides.length && !currentUser.organization" color="primary" (click)="save()" [disabled]="!userProfileForm || userProfileForm.get('organization').errors || userProfileForm.get('phoneNumber').errors">{{'finish' | i18n}}</button>
+  <button md-button *ngIf="index === slides.length && currentUser.organization" color="primary" (click)="close()">{{'finish' | i18n}}</button>  
+  <button md-button (click)="selectSlide(index-1)" *ngIf="index > 0">{{'previous' | i18n}}</button>
+</md-dialog-actions>

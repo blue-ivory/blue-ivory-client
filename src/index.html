@@ -1,0 +1,60 @@
+<!doctype html>
+<html dir="rtl">
+
+<head>
+  <meta charset="utf-8">
+  <title>BlueIvory</title>
+  <base href="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/png" href="../assets/gate-keeper.png">
+  <style>
+    body {
+      background: #efefef;
+    }
+
+    .app-root-loading {
+      width: 100px;
+      height: 100px;
+      background-color: #1565c0;
+      border-radius: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      margin: auto;
+      animation: scaleout-loader 1.5s infinite ease-in-out;
+    }
+
+    @keyframes scaleout-loader {
+      0% {
+        transform: scale(0);
+      }
+      100% {
+        transform: scale(1.0);
+        opacity: 0;
+      }
+    }
+
+    iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 100%;
+      width: 100%;
+      border: none;
+      z-index: 1;
+    }
+  </style>
+</head>
+
+<body>
+  <app-root>
+    <div class="app-root-loading"></div>
+  </app-root>
+
+</body>
+
+</html>

@@ -1,0 +1,77 @@
+<md-spinner *ngIf="!dataLoaded"></md-spinner>
+<div *ngIf="dataLoaded">
+
+  <!-- Toolbar (Dialog Header) -->
+  <md-toolbar [class.preview-mode]="!editMode">
+    <img *ngIf="!editMode" src="/assets/60x60.png" class="user-profile-image">
+    <span>{{user.firstName + " " +user.lastName}}</span>
+    <span class="toolbar-spacer"></span>
+    <div class="toolbar-actions" *ngIf="!editMode">
+      <button md-icon-button mdTooltip="{{'edit' | i18n}}" (click)="editMode = true">
+        <md-icon>edit</md-icon>
+      </button>
+      <button md-icon-button mdTooltip="{{'close' | i18n}}" md-dialog-close>
+        <md-icon>close</md-icon>
+      </button>
+    </div>
+  </md-toolbar>
+
+  <!-- Dialog Content -->
+  <div md-dialog-content>
+    <!-- Basic user details section -->
+    <section>
+      <div fxLayout="row">
+        <span>{{'user_details' | i18n }}</span>
+      </div>
+      <md-list>
+        <md-list-item>
+          <md-icon md-list-avatar>email</md-icon>
+          <p md-line>{{user.mail}}</p>
+        </md-list-item>
+        <md-list-item>
+          <md-icon md-list-avatar>credit_card</md-icon>
+          <p md-line>{{user._id}}</p>
+        </md-list-item>
+        <md-list-item>
+          <md-icon md-list-avatar>account_balance</md-icon>
+          <p *ngIf="!editMode" md-line>{{user.organization ? user.organization.name : 'not_set' | i18n}}</p>
+          <md-select *ngIf="editMode" md-line placeholder="{{'not_set' | i18n}}" [(ngModel)]="selectedOrganization">
+            <md-option *ngFor="let organization of (organizationsCollection$ | async)?.set" [value]="organization._id">
+              {{ organization.name }}
+            </md-option>
+          </md-select>
+        </md-list-item>
+      </md-list>
+    </section>
+
+    <!-- User permissions section -->
+    <section *ngIf="currentUser">
+      <span>{{'user_permissions' | i18n }}</span>
+      <div class="section-content">
+        <div fxLayout="row">
+          <md-icon>account_balance</md-icon>
+          <span>{{'permissions_displayed_for' | i18n}}</span>
+          <md-select placeholder="{{'organization' |i18n}}" (change)="onOrganizationForPermissionSelected()" [(ngModel)]="selectedOrganizationForPermissions">
+            <md-option *ngFor="let organization of editableOrganizations$ | async" [value]="organization">
+              {{ organization.name }}
+            </md-option>
+          </md-select>
+        </div>
+        <md-grid-list rowHeight="50px" cols="2">
+          <md-grid-tile *ngFor="let permission of displayPermissions">
+            <p class="grid-tile">
+              <span *ngIf="!editMode" [class.unchecked-permission]="!permission.checked">{{permission.name | i18n}}</span>
+              <md-checkbox *ngIf="editMode" [(ngModel)]="permission.checked">{{permission.name | i18n}}</md-checkbox>
+            </p>
+          </md-grid-tile>
+        </md-grid-list>
+      </div>
+
+
+    </section>
+  </div>
+  <div md-dialog-actions *ngIf="editMode" align="end">
+    <button disableRipple="true" color="primary" md-button (click)="discardUserChanges()">{{'cancel' | i18n }}</button>
+    <button disableRipple="true" color="primary" md-button (click)="saveUserChanges()">{{'save' | i18n }}</button>
+  </div>
+</div>

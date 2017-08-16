@@ -1,0 +1,53 @@
+<div class="workflow-details-container">
+
+  <md-card>
+    <md-card-header>{{'create_new_task' | i18n}}</md-card-header>
+    <md-card-content fxLayout="row">
+      <div fxFlex fxLayout="row" class="select-item">
+        <md-icon>account_balance</md-icon>
+        <md-select [(ngModel)]="selectedOrganization" fxFlex [placeholder]="'task_for' | i18n">
+          <md-option *ngFor="let organization of organizations" [value]="organization">{{organization.name}}</md-option>
+        </md-select>
+      </div>
+      <div fxFlex fxLayout="row" class="select-item">
+        <md-icon>directions_car</md-icon>
+        <md-radio-group [(ngModel)]="selectedType">
+          <md-radio-button value="CAR" checked="true">
+            {{'APPROVE_CAR' | i18n}}
+          </md-radio-button>
+          <md-radio-button value="HUMAN">
+            {{'NONE_CAR' | i18n}}
+          </md-radio-button>
+        </md-radio-group>
+      </div>
+    </md-card-content>
+    <md-card-actions align="end">
+      <button md-button (click)="addTask()">{{'add' | i18n}}</button>
+    </md-card-actions>
+  </md-card>
+
+  <section class="preview-workflow">
+    <md-card>
+      <md-card-header>{{'manage_workflow' | i18n}} {{'for' | i18n}} &nbsp; <strong>{{organization?.name}}</strong></md-card-header>
+      <md-card-content>
+        <p *ngIf="displayTasks.length === 0">{{'no_tasks_available_for_this_organization' | i18n}}</p>
+        <div class="workflow-list" fxLayout="column">
+          <div class="workflow-item" *ngFor="let task of displayTasks" fxLayout="row" droppable (dropped)="onDrop($event, task)" [draggable]="task">
+            <div class="counter-bubble"></div>
+            <div class="item-content" fxLayout="row">
+              <h4>{{task.organization.name}}</h4>
+              <p *ngIf="task.includeCar">
+                {{'car_approval_required' | i18n}}
+              </p>
+            </div>
+            <div class="flex-spacer"></div>
+            <button md-icon-button [class.disabled-pointer-events]="disablePointerEvents" (click)="deleteTask(task)"><md-icon>delete</md-icon></button>
+          </div>
+        </div>
+      </md-card-content>
+      <md-card-actions align="end">
+        <button md-button (click)="saveWorkflow()">{{'save' | i18n}}</button>
+      </md-card-actions>
+    </md-card>
+  </section>
+</div>

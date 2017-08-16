@@ -1,0 +1,8 @@
+<div class="pagination-container" fxLayout="row" *ngIf="totalPages > 1">
+  <button md-icon-button [disabled]="page - 1 <= 0" (click)="prevPage()"><md-icon>keyboard_arrow_right</md-icon></button>
+  <div class="pages-container" fxLayout="row">
+    <div *ngFor="let pageNumber of (pages | async)" (click)="setPage(pageNumber)" class="page-number" [class.selected]="page == pageNumber">{{pageNumber}}</div>
+  </div>
+  <button md-icon-button [disabled]="page + 1 > totalPages" (click)="nextPage()"><md-icon>keyboard_arrow_left</md-icon></button>
+
+</div>

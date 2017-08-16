@@ -1,0 +1,51 @@
+<md-toolbar>
+  <span>{{'settings' | i18n}}</span>
+</md-toolbar>
+<div md-dialog-content fxLayout="column" class="settings-dialog-content">
+  <md-list>
+    <div md-subheader>
+      <md-icon>person</md-icon>
+      <span>{{'user_profile' | i18n}}</span>
+    </div>
+    <md-list-item>
+      <div md-line fxLayout="row">
+        <md-icon class="phone-icon">phone</md-icon>
+        <md-input-container floatPlaceholder="never" fxFlex>
+          <input mdInput [(ngModel)]="phoneNumber" (keyup)="phoneNumberChanged = true" type="tel" [placeholder]="'phone_number' | i18n" />
+          <md-hint *ngIf="!phoneNumber">{{'enter_phone_number_for_autofill' | i18n}}</md-hint>
+        </md-input-container>
+      </div>
+      <div md-line *ngIf="phoneNumberChanged">
+        <button color="primary" (click)="updatePhoneNumber()" md-button class="save-button">{{'save' |i18n}}</button>
+      </div>
+    </md-list-item>
+    <md-divider></md-divider>
+    <div md-subheader>
+      <md-icon>settings_applications</md-icon>
+      <span>{{'site_settings' | i18n}} ({{'experimental' | i18n}})</span>
+    </div>
+    <md-list-item>
+      <div md-line fxLayout="row">
+        <md-icon>language</md-icon>
+        <md-select fxFlex md-line placeholder="{{'select_language' | i18n}}" [(ngModel)]=settingsService.defaultLanguage (change)="languageChanged($event)">
+          <md-option value="he">
+            עברית
+          </md-option>
+          <md-option value="en">
+            English
+          </md-option>
+        </md-select>
+      </div>
+    </md-list-item>
+    <md-list-item>
+      <div md-line fxLayout="row">
+        <md-icon>palette</md-icon>
+        <div (click)="toggleTheme('default')" class="theme default"></div>
+        <div (click)="toggleTheme('purple-green')" class="theme purple-green"></div>        
+        <div (click)="toggleTheme('green-teal')" class="theme green-teal"></div>                
+        <div (click)="toggleTheme('dark')" class="theme dark"></div>
+        <div (click)="toggleTheme('dark-pink')" class="theme dark-pink"></div>        
+      </div>
+    </md-list-item>
+  </md-list>
+</div>

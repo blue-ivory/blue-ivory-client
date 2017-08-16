@@ -1,0 +1,22 @@
+<div class="workflow-container">
+  <md-card>
+    <md-card-header>
+      <h4 md-card-title>{{'manage_workflow' | i18n}}</h4>
+    </md-card-header>
+    <md-card-content fxLayout="column">
+      <p>
+        {{'workflow_introduction_message' | i18n}}
+      </p>
+      <p>
+        {{'workflow_warning_message' | i18n}}
+      </p>
+      <md-select [(ngModel)]="selectedOrganization" [placeholder]="'select_organization' | i18n">
+        <md-option *ngFor="let organization of editableOrganizations$ | async" [value]="organization._id">{{ organization.name }}</md-option>
+      </md-select>
+    </md-card-content>
+    <md-card-actions align="end" *ngIf="selectedOrganization">
+      <a md-button [routerLink]="selectedOrganization">{{'edit_workflow' | i18n}}</a>
+
+    </md-card-actions>
+  </md-card>
+</div>

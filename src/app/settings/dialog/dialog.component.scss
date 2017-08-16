@@ -1,0 +1,58 @@
+@import '~@angular/material/theming';
+@import 'src/app-theme.scss';
+.settings-dialog-content {
+    padding: 16px;
+    p {
+        white-space: pre-line;
+    }
+    md-list-item {
+        padding-right: 16px;
+        md-icon {
+            padding-left: 16px;
+            &.phone-icon {
+                padding-top: 16px;
+            }
+        }
+    }
+    md-divider {
+        margin: 16px 0;
+    }
+    [md-subheader] {
+        span {
+            position: relative;
+            top: -5px;
+        }
+    }
+    .theme {
+        width: 25px;
+        height: 25px;
+        border-radius: 25px;
+        margin: 0 14px;
+        cursor: pointer;
+        &.default {
+            border: 2px solid mat-color($app-primary);
+            background: $background;
+        }
+        &.purple-green {
+            border: 2px solid mat-color($purple-green-primary);
+            background: $purple-green-background;
+        }
+        &.green-teal {
+            border: 2px solid mat-color($green-teal-primary);
+            background: $green-teal-background;
+        }
+        &.dark {
+            border: 2px solid mat-color($dark-primary);
+            background: $dark-background;
+        }
+        &.dark-pink {
+            border: 2px solid mat-color($dark-pink-primary);
+            background: $dark-pink-background;
+        }
+    }
+
+    .save-button {
+        float: left;
+        
+    }
+}

@@ -1,0 +1,110 @@
+@import '~@angular/material/theming';
+@import 'src/app-theme.scss';
+md-toolbar.app-toolbar {
+    background: linear-gradient(305deg, #0D47A1, #42A5F5) !important;
+    background: url(https://angular.io/resources/images/backgrounds/super-hero-large.png) no-repeat bottom center, -webkit-linear-gradient(305deg, #0D47A1, #42A5F5) !important;
+    background-blend-mode: multiply !important;
+    background-size: 100% !important;
+    md-toolbar-row {
+        transition: height 250ms ease-in;
+        span.user-greeting {
+            color: black;
+            font-weight: 300;
+        }
+        &.nav-bar {
+            background: rgba(0, 0, 0, 0.34);
+            height: 48px !important;
+            nav {
+                border: none;
+            }
+        }
+        &.tall-toolbar {
+            height: 40vh !important;
+        }
+        app-search-bar {
+            padding-right: 20px !important;
+        }
+    }
+}
+
+[fullscreen] {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+md-toolbar.application-toolbar {
+    @include mat-elevation(2);
+    position: relative;
+    z-index: 1;
+    min-width: 620px;
+    md-toolbar-row {
+        span.user-greeting {
+            color: black;
+            font-weight: 300;
+        }
+        &.nav-bar {
+            height: 48px !important;
+            nav {
+                border: none;
+            }
+        }
+    }
+    app-search-bar {
+        width: 400px;
+        margin: 0 120px;
+    }
+}
+
+md-sidenav-container {
+    min-width: 620px;
+    height: calc(100% - 64px);
+    md-sidenav {
+        background: transparent !important;
+        min-width: 230px;
+        md-nav-list {
+            padding: 8px;
+            md-divider {
+                border-top-color: #ddd;
+                margin: 0 8px;
+                &:first-of-type {
+                    margin-top: 8px;
+                }
+                &:last-of-type {
+                    margin-bottom: 8px;
+                }
+            }
+            [md-list-item].active {
+                background-color: rgba(0, 0, 0, .05);
+                border-radius: 2px;
+                * {
+                    font-weight: bold;
+                }
+            }
+        }
+    }
+}
+
+app-request-create,
+app-organization-create {
+    position: fixed;
+    bottom: 23px;
+    left: 46px;
+    transition: all 500ms;
+    opacity: 0;
+    visibility: hidden;
+    &.show {
+        opacity: 1;
+        visibility: visible;
+    }
+}
+
+.application-content {
+    padding: 25px 0;
+    height: calc(100% - 64px - 12px - 50px);
+    overflow-y: auto;
+    padding-bottom: 100px;
+    background: transparent;
+}
