@@ -1,4 +1,4 @@
-import { ApiService } from './../shared/b.domain/api.service';
+import { ApiService } from './../shared/services/api.service';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Rx';
 import { URLSearchParams } from '@angular/http';

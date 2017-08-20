@@ -1,4 +1,4 @@
-import { ApiService } from './../shared/b.domain/api.service';
+import { ApiService } from './../shared/services/api.service';
 import { Organization } from './../organizations/organization';
 import { Task } from './task';
 import { Observable } from 'rxjs/Rx';

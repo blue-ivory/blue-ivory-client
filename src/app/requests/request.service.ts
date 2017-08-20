@@ -3,7 +3,7 @@ import { URLSearchParams } from '@angular/http';
 import { Observable } from 'rxjs/Rx';
 import { environment } from 'environments/environment';
 import * as io from 'socket.io-client';
-import { ApiService } from './../shared/b.domain/api.service';
+import { ApiService } from './../shared/services/api.service';
 import { Request } from './request';
 import { User } from '../users/user';
 import { Visitor } from '../visitors/visitor';

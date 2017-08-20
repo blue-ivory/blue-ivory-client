@@ -1,5 +1,5 @@
 import { Router } from '@angular/router';
-import { ApiService } from './../shared/b.domain/api.service';
+import { ApiService } from './../shared/services/api.service';
 import { Injectable } from '@angular/core';
 import { URLSearchParams } from '@angular/http';
 import { Observable, BehaviorSubject } from 'rxjs/Rx';

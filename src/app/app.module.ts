@@ -16,8 +16,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { SharedModule } from './shared';
 import { HomeModule } from './home';
 
-import { SocketService } from './shared/b.domain/socket.service';
-import { ApiService } from './shared/b.domain/api.service';
+import { SocketService } from './shared/services/socket.service';
+import { ApiService } from './shared/services/api.service';
 
 import { AuthGuard } from './guards';
 import { AuthService } from './auth/auth.service';
